@@ -1,0 +1,318 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+body, .data-table {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.cheapest-btn {
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.data-table {
+  margin-top: 1rem;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+.filters input,
+.filters select {
+  padding: 0.4rem;
+  font-size: 0.9rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+th {
+  background: #f4f4f4;
+}
+
+.comparison {
+  margin-top: 2rem;
+}
+
+.comparison table th,
+.comparison table td {
+  padding: 0.4rem;
+  font-size: 0.9rem;
+}
+
+
+.badge {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: white;
+}
+
+.badge-blue { background-color: #3b82f6; }   /* Azul */
+.badge-green { background-color: #10b981; }  /* Verde */
+.badge-gray { background-color: #6b7280; }   /* Gris */
+.badge-red { background-color: #ef4444; }    /* Rojo */
+
+/* Estilos generales */
+.data-table {
+font-family: 'Montserrat', sans-serif;
+}
+.filters input,
+.filters select {
+margin: 0.5rem;
+padding: 0.4rem;
+font-family: 'Montserrat', sans-serif;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 1rem;
+}
+th, td {
+border: 1px solid #ddd;
+padding: 0.6rem;
+text-align: left;
+font-family: 'Montserrat', sans-serif;
+}
+th {
+background-color: #f4f4f4;
+}
+
+/* Badges generales */
+.badge {
+display: inline-block;
+padding: 0.2rem 0.4rem;
+border-radius: 0.4rem;
+font-size: 0.75rem;
+font-family: 'Montserrat', sans-serif;
+}
+.badge-blue { background-color: #007bff; color: white; }
+.badge-green { background-color: #28a745; color: white; }
+.badge-gray { background-color: #6c757d; color: white; }
+.badge-red { background-color: #dc3545; color: white; }
+
+/* Badges de idiomas (voces y subtítulos) /
+.badges-cell .badge-lang {
+margin: 0.1rem;
+}
+/ Badges de idiomas (voces y subtítulos) /
+.badges-cell .badge-lang {
+margin: 0.1rem;
+}
+/ Color único para todos los badges de idioma */
+.badge-lang {
+background-color: #17a2b8;
+color: white;
+margin: 1.5px 1.5px;
+}
+
+/* Comparación */
+.comparison table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 1rem;
+}
+.comparison th, .comparison td {
+border: 1px solid #ccc;
+padding: 0.5rem;
+font-family: 'Montserrat', sans-serif;
+}
+
+.navbar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+.navbar-brand {
+  height: 200px;
+  margin-right: 12px;
+  background-color: white;
+
+}
+
+.hero-title{
+  color: white;
+  background-color: #1f2937;
+}
+
+.navbar-logo {
+  height: 250px;
+  background-color: rgba(0, 0, 0, 0.87);
+  padding: 0 60px;
+  border-radius: 30px;
+  margin-right: 12px;
+}
+.navbar-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f2937;
+}
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  margin: 0px 30px 0px 0px;
+}
+.navbar-menu a {
+  color: #4b5563;
+  font-size: 16px;
+}
+.navbar-menu a:hover {
+  color: #1e40af;
+}
+.navbar-button {
+  background-color: #1e40af;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.navbar-button:hover {
+  background-color: #1b3aab;
+}
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar-menu,
+  .navbar-button {
+    display: none;
+  }
+  .navbar-toggle {
+    display: block;
+  }
+}
+
+
+.data-table {
+  font-family: Arial, sans-serif;
+}
+.data-table .controls {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  background-color: #000000e8;
+  margin: auto;
+  padding: 20px;
+}
+.data-table .btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.data-table .btn-active {
+  background-color: #10b981;
+  color: #fff;
+}
+.data-table .btn-inactive {
+  background-color: #1e40af;
+  color: #fff;
+}
+.data-table .filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.data-table .filters select,
+.data-table .filters input {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.table-wrapper {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+tr:nth-child(even) td {
+  background-color: #f3f4f6;
+}
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.badge-blue { background-color: #bfdbfe; color: #1e3a8a; }
+.badge-green { background-color: #d1fae5; color: #065f46; }
+.badge-gray { background-color: #e5e7eb; color: #374151; }
+.badge-red { background-color: #fecaca; color: #991b1b; }
+.badge-lang { background-color: #f3f4f6; color: #374151; margin-right: 4px; }
+.no-spec { color: #9ca3af; font-size: 12px; }
+
+
+.footer {
+  background-color: #f3f4f6;
+  padding: 24px 0;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+.footer a {
+  margin: 0 8px;
+  color: #4b5563;
+}
+.footer a:hover {
+  color: #1e40af;
+}
+
+.body {
+  /* Ejemplo de fondo: reemplaza la URL por una directa a la imagen */
+  background-image: url('./assets/image.png');
+  background-size: auto;
+
+  /* opcional: poner un color de respaldo si no carga la imagen */
+  background-color: #4d25fc;
+}
