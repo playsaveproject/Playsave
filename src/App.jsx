@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import Navbar from './components/Navbar';
-import DataTable from './components/DataTable';
-import Footer from './components/Footer';
+import Navbar from './components/NavBar.jsx';
+import DataTable from './components/DataTable.jsx';
+import Footer from './components/Footer.jsx';
 import './App.css';
 
 // Componente que protege rutas: redirige al login si no está autenticado
