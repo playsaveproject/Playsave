@@ -13,11 +13,11 @@ const redirectUri = window.location.origin;
 
 const onRedirectCallback = (appState) => {
   // Tras el login, volvemos a la ruta original o a “/”
-  window.history.replaceState(
-+       {},
-+       document.title,
-+       appState?.returnTo || window.location.pathname
-+     );
+window.history.replaceState(
+    {},
+    document.title,
+    appState?.returnTo || window.location.pathname
+  );
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
