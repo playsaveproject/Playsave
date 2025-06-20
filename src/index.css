@@ -164,8 +164,7 @@ font-family: 'Montserrat', sans-serif;
 }
 
 .navbar-logo {
-  height: 250px;
-  background-color: rgba(0, 0, 0, 0.87);
+  height: 50px;
   padding: 0 60px;
   border-radius: 30px;
   margin-right: 12px;
@@ -224,7 +223,6 @@ font-family: 'Montserrat', sans-serif;
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  background-color: #000000e8;
   margin: auto;
   padding: 20px;
 }
@@ -315,4 +313,8 @@ tr:nth-child(even) td {
 
   /* opcional: poner un color de respaldo si no carga la imagen */
   background-color: #4d25fc;
+}
+
+.altoBarra{
+  height: 80px;
 }

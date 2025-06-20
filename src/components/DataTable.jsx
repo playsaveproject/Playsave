@@ -1,14 +1,20 @@
 import React, { useState, useMemo } from 'react';
 import './DataTable.css';
+import { Link as LinkIcon } from 'lucide-react';
 
 // Conversión de monedas actualizada
 const conversionRates = {
   INR: 0.0125,
   EUR: 1.16,
   USD: 1,
-  TRY: 0.0253,
+  TRY: 0.0252,
   GBP: 1.34,
-  MXN: 0.055
+  MXN: 0.055,
+  TWD: 0.03382,
+  SGD: 0.7773,
+  KRW: 0.00073,
+  JPY: 0.0069,
+  HKD: 0.13
 };
 
 function getFlagIcon(code) {
@@ -23,6 +29,11 @@ function getCurrency(item) {
     case 'TR': return 'TRY';
     case 'MX': return 'MXN';
     case 'GB': return 'GBP';
+    case 'TW': return 'TWD';
+    case 'SG': return 'SGD';
+    case 'KR': return 'KRW';
+    case 'JP': return 'JPY';
+    case 'HK': return 'HKD';
     default: return 'USD';
   }
 }
@@ -30,7 +41,6 @@ function getCurrency(item) {
 function parseNumber(raw, currency) {
   if (!raw) return 0;
   const rawStr = String(raw);
-  // Si viene con prefijo US$, tratamos como USD
   if (/^US\$/.test(rawStr)) {
     const num = rawStr.replace(/[^\d.]/g, '');
     return parseFloat(num) || 0;
@@ -94,20 +104,19 @@ export default function DataTable() {
 
   const [cheapestMode, setCheapestMode] = useState(false);
   const [filters, setFilters] = useState({ pais: '', tipo: '', titulo: '' });
-  const [sortOption, setSortOption] = useState('');
+  const [sortOption, setSortOption] = useState('popularity_desc');
   const [currentPage, setCurrentPage] = useState(0);
   const pageSize = 30;
 
   const sortOptions = [
-    { value: '', label: 'Ordenar por relevancia' },
+    { value: 'popularity_desc', label: 'Popularidad: más popular primero' },
+    { value: 'popularity_asc', label: 'Popularidad: menos popular primero' },
     { value: 'price_asc', label: 'Precio: menor a mayor' },
     { value: 'price_desc', label: 'Precio: mayor a menor' },
     { value: 'discount_desc', label: 'Descuento: mayor a menor' },
     { value: 'discount_asc', label: 'Descuento: menor a mayor' },
     { value: 'expiry_asc', label: 'Expira: más cercano primero' },
     { value: 'expiry_desc', label: 'Expira: más lejano primero' },
-    { value: 'popularity_desc', label: 'Popularidad: más popular primero' },
-    { value: 'popularity_asc', label: 'Popularidad: menos popular primero' }
   ];
 
   const uniqueValues = key =>
@@ -120,53 +129,29 @@ export default function DataTable() {
 
   const enriched = useMemo(
     () => allData.map(item => {
-      const votes = parseInt(String(item.votes).replace(/\D/g, ''), 10) || 0;
+      const votes = parseInt(String(item.votes).replace(/\D/g,''), 10) || 0;
       const curr = getCurrency(item);
-      const isMDY = ['US', 'CA'].includes(item.pais);
-
-      // Precio final
-      const localFinal = (curr === 'INR' || curr === 'TRY')
+      const localFinal = curr === 'INR' || curr === 'TRY'
         ? parseNumber(item.precioFinal, curr)
         : (item.precioNum != null ? item.precioNum : parseNumber(item.precioFinal, curr));
       const usdFinal = toUSD(localFinal, curr);
-
-      // Precio original
-      let origCurr = curr;
-      if (typeof item.precioOrig === 'string' && item.precioOrig.startsWith('US$')) {
-        origCurr = 'USD';
-      }
+      const origCurr = typeof item.precioOrig === 'string' && item.precioOrig.startsWith('US$') ? 'USD' : curr;
       const localOrig = parseNumber(item.precioOrig, origCurr);
       const usdOrig = toUSD(localOrig, origCurr);
 
-      // Fecha de expiración
       let expiryDate = null;
-      const dtTimeMatch = item.offerEnds?.match(
-        /(\d{1,2})[\/\.](\d{1,2})[\/\.](\d{4})\s+(\d{1,2}):(\d{2})\s*(a\.m\.|p\.m\.)\s*GMT([+-]?\d+)/i
-      );
-      if (dtTimeMatch) {
-        const [, p1, p2, y, hh, mm, ampm, tz] = dtTimeMatch;
-        const day = isMDY ? p2 : p1;
-        const month = isMDY ? p1 : p2;
-        let hour = parseInt(hh, 10);
-        if (/p\.m\./i.test(ampm) && hour < 12) hour += 12;
-        if (/a\.m\./i.test(ampm) && hour === 12) hour = 0;
-        const tzSign = tz[0];
-        const tzHour = tz.slice(1).padStart(2,'0');
-        expiryDate = new Date(`${y}-${month.padStart(2,'0')}-${day.padStart(2,'0')}T${hour.toString().padStart(2,'0')}:${mm}:00${tzSign}${tzHour}:00`);
-      } else {
-        const dtMatch = item.offerEnds?.match(/(\d{1,2})[\/\.](\d{1,2})[\/\.](\d{4})/);
-        if (dtMatch) {
-          const [, p1, p2, y] = dtMatch;
-          const day = isMDY ? p2 : p1;
-          const month = isMDY ? p1 : p2;
-          expiryDate = new Date(`${y}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`);
-        }
+      const md = item.offerEnds?.match(/(\d{1,2})[\/\.](\d{1,2})[\/\.](\d{4})/);
+      if (md) {
+        const [ , p1, p2, y] = md;
+        const isMDY = ['US','CA'].includes(item.pais);
+        const day = isMDY? p2: p1;
+        const mo = isMDY? p1: p2;
+        expiryDate = new Date(`${y}-${mo.padStart(2,'0')}-${day.padStart(2,'0')}`);
       }
       const isExpired = expiryDate ? expiryDate.getTime() < Date.now() : false;
 
       return { ...item, votes, usdFinal, usdOrig, expiryDate, isExpired };
-    }),
-    [allData]
+    }), [allData]
   );
 
   const grouped = useMemo(() => {
@@ -186,43 +171,21 @@ export default function DataTable() {
       if (filters.tipo && item.tipo !== filters.tipo) return false;
       if (filters.titulo && !item.titulo.toLowerCase().includes(filters.titulo.toLowerCase())) return false;
       return true;
-    }),
-    [grouped, filters]
+    }), [grouped, filters]
   );
 
   const sorted = useMemo(() => {
     const data = [...filtered];
     switch (sortOption) {
-      case 'price_asc':
-        data.sort((a, b) => a.usdFinal - b.usdFinal);
-        break;
-      case 'price_desc':
-        data.sort((a, b) => b.usdFinal - a.usdFinal);
-        break;
-      case 'discount_desc':
-        data.sort((a, b) => parseFloat(b.descuento) - parseFloat(a.descuento));
-        break;
-      case 'discount_asc':
-        data.sort((a, b) => parseFloat(a.descuento) - parseFloat(b.descuento));
-        break;
-      case 'expiry_asc':
-        data.sort((a, b) =>
-          (a.expiryDate?.getTime() ?? Infinity) - (b.expiryDate?.getTime() ?? Infinity)
-        );
-        break;
-      case 'expiry_desc':
-        data.sort((a, b) =>
-          (b.expiryDate?.getTime() ?? -Infinity) - (a.expiryDate?.getTime() ?? -Infinity)
-        );
-        break;
-      case 'popularity_desc':
-        data.sort((a, b) => b.votes - a.votes);
-        break;
-      case 'popularity_asc':
-        data.sort((a, b) => a.votes - b.votes);
-        break;
-      default:
-        break;
+      case 'price_asc': data.sort((a,b)=>(a.usdFinal-b.usdFinal)); break;
+      case 'price_desc': data.sort((a,b)=>(b.usdFinal-a.usdFinal)); break;
+      case 'discount_desc': data.sort((a,b)=>(parseFloat(b.descuento)-parseFloat(a.descuento))); break;
+      case 'discount_asc': data.sort((a,b)=>(parseFloat(a.descuento)-parseFloat(a.descuento))); break;
+      case 'expiry_asc': data.sort((a,b)=>(a.expiryDate?.getTime()??Infinity)-(b.expiryDate?.getTime()??Infinity)); break;
+      case 'expiry_desc': data.sort((a,b)=>(b.expiryDate?.getTime()??-Infinity)-(a.expiryDate?.getTime()??-Infinity)); break;
+      case 'popularity_desc': data.sort((a,b)=>(b.votes-a.votes)); break;
+      case 'popularity_asc': data.sort((a,b)=>(a.votes-b.votes)); break;
+      default: break;
     }
     return data;
   }, [filtered, sortOption]);
@@ -233,7 +196,16 @@ export default function DataTable() {
   return (
     <div className="data-table">
       {/* Controles */}
+      <div className='row justify-content-center'>
+        <div className='col-10 col-lg-6 mt-5'>
+
+              <p>Bienvenido al <b>software de ofertas</b> <b>más completo.</b></p>
+              <p>Aqui encontraras las <b>últimas ofertas</b> de <b>juegos digitales</b> de <b>más de 15 paises distintos</b>, para que <b>ahorres</b> al máximo y puedas mejorar tu <b>eficiencia</b> a la hora de comprar juegos digitales.</p>
+              <p className='mt-4'>Actualmente, <b>actualizamos las ofertas cada 3 días.</b> </p>
+        </div>
+      </div>
       <div className="controls mb-3">
+         
         <button
           type="button"
           onClick={() => { setCheapestMode(c => !c); setCurrentPage(0); }}
@@ -246,6 +218,7 @@ export default function DataTable() {
               : 'Al presionar, analiza el mismo título en todos los países, mostrando solo el más barato.'}
           </span>
         </button>
+
       </div>
 
       {/* Filtros y orden */}
@@ -315,7 +288,7 @@ export default function DataTable() {
                 </td>
                 <td className='text-center'>
                   <a href={item.link} target="_blank" rel="noopener noreferrer">
-                    Ver enlace
+                    <LinkIcon size={16} />
                   </a>
                 </td>
                 <td className="badges-cell ">

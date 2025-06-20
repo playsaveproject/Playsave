@@ -5,6 +5,7 @@ import Navbar from './components/NavBar.jsx';
 import DataTable from './components/DataTable.jsx';
 import Footer from './components/Footer.jsx';
 import './App.css';
+import logo from './assets/PlaySave.png';
 
 // Componente que protege rutas: redirige al login si no está autenticado
 function ProtectedRoute({ children }) {
@@ -35,30 +36,41 @@ function LoginPage() {
 // Componente principal con rutas
 export default function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        {/* Ruta pública de login */}
-        <Route path="/login" element={<LoginPage />} />
+    <>
+     <nav className={`navbar navbar-expand-lg altoBarra text-light fixed-top `}>
+       
+                      <a href='/'><img src={logo} alt="OfertaMax" className="navbar-logo" /></a>
 
-        {/* Resto protegido */}
-        <Route
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <div className="app">
-                <header className="hero">
+                      <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+                          <ul className="navbar-nav text-center">
+                              <li className="nav-item">
+                                  <a className={`nav-link text-dark me-5`} to="/">Inicio</a>
+                              </li>
 
-                </header>
-                <main className="container main-content">
-                  <DataTable />
-                </main>
-                <Footer />
-              </div>
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+                          </ul>
+                      </div>
+               
+              </nav>
+    <main className=''>
+      <BrowserRouter>
+        <Routes>
+          {/* Ruta pública de login */}
+          <Route path="/login" element={<LoginPage />} />
+
+          {/* Resto protegido */}
+          <Route
+            path="/*"
+            element={
+        
+                  <main className="container-fluid">
+                    <DataTable />
+                  </main>
+    
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+      </main>
+    </>
   );
 }
