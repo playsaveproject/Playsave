@@ -61,13 +61,14 @@ export default function App() {
           <Route
             path="/*"
             element={
-        
-                  <main className="container-fluid">
-                    <DataTable />
-                  </main>
-    
+              <ProtectedRoute>
+                <main className="container-fluid">
+                  <DataTable />
+                </main>
+              </ProtectedRoute>
             }
           />
+          
         </Routes>
       </BrowserRouter>
       </main>
