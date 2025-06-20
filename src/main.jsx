@@ -22,7 +22,19 @@ window.history.replaceState(
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-
+  <Auth0Provider
+    domain={domain}
+    clientId={clientId}
+    authorizationParams={{
+      redirect_uri: redirectUri,
+      // opcional: audience y scope si los necesitas
+      // audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      // scope: 'openid profile email'
+    }}
+    onRedirectCallback={onRedirectCallback}
+    useRefreshTokens={true}
+    cacheLocation="localstorage"
+  >
     <App />
-
+  </Auth0Provider>
 );
